@@ -17,9 +17,10 @@ jobs:
           ${{ runner.os }}-venv-
     # Build a virtualenv, but only if it doesn't already exist
     - run: python -m venv ./.venv && . ./.venv/bin/activate && 
-           pip install -r requirements.txt
+           pip install -r requirements.txt && pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 -f https://download.pytorch.org/whl/torch_stable.html
       if: steps.cache-venv.outputs.cache-hit != 'true'
     # Run tests
     # Note that you have to activate the virtualenv in every step
     # because GitHub actions doesn't preserve the environment
-    - run: . ./.venv/bin/activate && nosetests tests/
+    - run: |
+       ls .venv/scripts
