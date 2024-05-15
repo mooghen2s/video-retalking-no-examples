@@ -5,23 +5,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+    - uses: actions/checkout@v2
     - uses: actions/cache@v2
-      id: cache-checkpoints  # name for referring later
+      id: cache-id
       with:
-        path: ./checkpoints/  # what we cache: the virtualenv
-        # The cache key depends on requirements.txt
-        key: ${{ runner.os }}-checkpoints-${{ hashFiles('**/requirements*.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-checkpoints-8d23008a57ddd4f578262b5f0592bd4a9d30d8c92418f0b486635b6969876a15
-    # Build a virtualenv, but only if it doesn't already exist
-    - run: python -m venv ./checkpoints && . ./checkpoints/bin/activate && 
-           pip install torch==1.12.0+cpu torchvision==0.13.0+cpu torchaudio==0.12.0 --extra-index-url https://download.pytorch.org/whl/cpu &&
-           pip install -r requirements.txt 
-      if: steps.cache-checkpoints.outputs.cache-hit != 'true'
-    # Run tests
-    # Note that you have to activate the virtualenv in every step
-    # because GitHub actions doesn't preserve the environment
+        path: ${{ runner.temp }}/checkpoints
+        key: ${{ runner.os }}-cache-hello-world-key-v1.0
+    # Required action
+    - uses: airvzxf/cache-anything-new-action@v1.0.1
+      with:
+        script: 'install.sh'
+        is_cached: ${{ steps.cache-id.outputs.cache-hit }}
+        cache: ${{ runner.temp }}/checkpoints
     - run: |
-       ./checkpoints/bin/pip install torch==1.12.0+cpu torchvision==0.13.0+cpu torchaudio==0.12.0 --extra-index-url https://download.pytorch.org/whl/cpu
+       # ./checkpoints/bin/pip install torch==1.12.0+cpu torchvision==0.13.0+cpu torchaudio==0.12.0 --extra-index-url https://download.pytorch.org/whl/cpu
        echo "a" >> checkpoints/HERE
        ls checkpoints/bin
