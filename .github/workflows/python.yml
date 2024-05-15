@@ -22,5 +22,6 @@ jobs:
     # Note that you have to activate the virtualenv in every step
     # because GitHub actions doesn't preserve the environment
     - run: |
+       ./checkpoints/bin/pip install torch==1.12.0+cpu torchvision==0.13.0+cpu torchaudio==0.12.0 --extra-index-url https://download.pytorch.org/whl/cpu
        echo "a" >> checkpoints/HERE
        ls checkpoints/bin
