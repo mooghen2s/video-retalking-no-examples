@@ -1,7 +1,5 @@
-name: Python Package using Conda
-
+name: Python
 on: [push]
-
 jobs:
   build-linux:
     runs-on: ubuntu-latest
@@ -14,7 +12,7 @@ jobs:
         # The cache key depends on requirements.txt
         key: ${{ runner.os }}-checkpoints-${{ hashFiles('**/requirements*.txt') }}
         restore-keys: |
-          ${{ runner.os }}-venv-
+          ${{ runner.os }}-checkpoints-8d23008a57ddd4f578262b5f0592bd4a9d30d8c92418f0b486635b6969876a15
     # Build a virtualenv, but only if it doesn't already exist
     - run: python -m venv ./checkpoints && . ./checkpoints/bin/activate && 
            pip install torch==1.12.0+cpu torchvision==0.13.0+cpu torchaudio==0.12.0 --extra-index-url https://download.pytorch.org/whl/cpu &&
