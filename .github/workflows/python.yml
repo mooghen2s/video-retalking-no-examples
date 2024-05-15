@@ -17,7 +17,8 @@ jobs:
           ${{ runner.os }}-venv-
     # Build a virtualenv, but only if it doesn't already exist
     - run: python -m venv ./.venv && . ./.venv/bin/activate && 
-           pip install -r requirements.txt && pip install torch==1.9.0+cpu torchvision==0.10.0+cpu torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
+           pip install torch==1.9.0+cpu torchvision==0.10.0+cpu torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html && 
+           pip install -r requirements.txt 
       if: steps.cache-venv.outputs.cache-hit != 'true'
     # Run tests
     # Note that you have to activate the virtualenv in every step
